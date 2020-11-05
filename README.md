@@ -12,8 +12,6 @@ Excel表格对比工具，pyQT可视化界面，批量对比。
 
 ```pyinstaller.exe -F -w -i emma2.ico .\MainWindow.py .\excel_diff.py .\images.py```
 
-执行exe
-
 运行程序，exe所在目录会生成日志文件`log.txt`，以及表格对比结果文件`xx_diff.xlsx`
 
 颜色说明：
