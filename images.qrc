@@ -1,0 +1,5 @@
+<RCC> 
+    <qresource prefix="/"> 
+        <file>emma2.ico</file>
+     </qresource> 
+</RCC>
