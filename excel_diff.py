@@ -428,7 +428,7 @@ class ExcelDiff:
             elif v == COMPARE.ME:
                 nrows = len(ex2[k].content)
                 ncols = len(ex2[k].title)
-                ex_diff[k] = (ex2[k], [[MODIFY.ADD] * ncols] * nrows)
+                ex_diff[k] = (ex2[k].content, [[MODIFY.ADD] * ncols] * nrows)
                 ex_modify[k] = MODIFY.ADD
 
         # Step2.写回
