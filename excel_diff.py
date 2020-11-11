@@ -77,7 +77,7 @@ class ExcelDiff:
         self.excel_path1 = excel1
         self.excel_path2 = excel2
         self.excel_path_diff = excel2.split('/')[-1].split('.')[0] + '_diff.xlsx' # 差异文件写回路径，当前目录
-        self.color_table = {MODIFY.UNCHANGED:'FFFFFF', MODIFY.MOD:'FFFF00', MODIFY.ADD:'B0C4DE', MODIFY.DEL:'FA8072', MODIFY.CHANGE_ROW:'90EE90'} # 白色、黄色、蓝色、红色、粉色
+        self.color_table = {MODIFY.UNCHANGED:'FFFFFF', MODIFY.MOD:'FFFF00', MODIFY.ADD:'6B84EF', MODIFY.DEL:'FF4F4F', MODIFY.CHANGE_ROW:'B0C4DE'} # 白色、黄色、蓝色、红色、粉色
         self.log = {} # 输出日志，{sheetname: {titles: [], modify: [], add: [], del: [], changerow: []}}
         self.window = window # 用于打印日志
 
