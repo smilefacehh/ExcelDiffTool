@@ -246,17 +246,15 @@ class ExcelDiff:
         title_idx1 = {}
         title_idx2 = {}
 
-        # 首行标题合并
+        # 首行标题合并，按照表2的顺序
         title = []
         title_modify = []
-        for t in sh_inter2[0]:
-            title.append(t)
-            title_modify.append(MODIFY.UNCHANGED)
-
         for i in range(len(sh2.title)):
             title_idx2[sh2.title[i]] = i
-            if sh2.title[i] not in title:
-                title.append(sh2.title[i])
+            title.append(sh2.title[i])
+            if sh2.title[i] in sh_inter2[0]:
+                title_modify.append(MODIFY.UNCHANGED)
+            else:
                 title_modify.append(MODIFY.ADD)
 
         for i in range(len(sh1.title)):
