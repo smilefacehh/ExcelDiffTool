@@ -50,12 +50,13 @@ class Sheet:
                 if idx == 0:
                     title[idx] = '#'
                 else:
-                    title[idx] = title[idx-1] + '#' # fix bug: 可能存在表头内容空的情况，默认给它一个名字，用前面的名字加上'#'
-            self.title.append(title[idx])
+                    title[idx] = str(title[idx-1]) + '#' # fix bug: 可能存在表头内容空的情况，默认给它一个名字，用前面的名字加上'#'
+            self.title.append(str(title[idx]))
 
     def set_content(self, content):
         self.content = content
         for idx in range(len(self.content[0])):
+            self.content[0][idx] = str(self.content[0][idx])
             if self.content[0][idx] == '':
                 if idx == 0:
                     self.content[0][idx] = '#'
@@ -279,7 +280,7 @@ class ExcelDiff:
                 title.append(sh1.title[i])
                 title_modify.append(MODIFY.DEL)
 
-        content.append([t if '#' not in t else '' for t in title]) # fix bug: 写表的时候，恢复原来的内容
+        content.append([t if '#' not in str(t) else '' for t in title]) # fix bug: 写表的时候，恢复原来的内容
         modify.append(title_modify)
         ncols = len(title)
 
