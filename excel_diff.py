@@ -45,10 +45,22 @@ class Sheet:
         self.content = []
 
     def set_title(self, title):
-        self.title = title
+        for idx in range(len(title)):
+            if title[idx] == '':
+                if idx == 0:
+                    title[idx] = '#'
+                else:
+                    title[idx] = title[idx-1] + '#' # fix bug: 可能存在表头内容空的情况，默认给它一个名字，用前面的名字加上'#'
+            self.title.append(title[idx])
 
     def set_content(self, content):
         self.content = content
+        for idx in range(len(self.content[0])):
+            if self.content[0][idx] == '':
+                if idx == 0:
+                    self.content[0][idx] = '#'
+                else:
+                    self.content[0][idx] = self.content[0][idx-1] + '#' # fix bug: 可能存在表头内容空的情况，默认给它一个名字，用前面的名字加上'#'
 
     def compare_title(self, other):
         """
@@ -97,10 +109,13 @@ class ExcelDiff:
             for idx_row in range(sh.nrows):
                 row = []
                 for idx_col in range(sh.ncols):
-                    ctype = sh.cell(idx_row, idx_col).ctype
+                    ctype = sh.cell(idx_row, idx_col).ctype # 0 empty,1 string, 2 number, 3 date, 4 boolean, 5 error
                     cell = sh.cell_value(idx_row, idx_col)
-                    if ctype == 2 and cell % 1 == 0.0:
-                        cell = int(cell)
+                    if ctype == 2: 
+                        if cell % 1 == 0.0: # 整数
+                            cell = int(cell)
+                        else:
+                            cell = round(cell, 7) # 最多保留7位小数
                     row.append(cell)
                 content.append(row)
 
@@ -249,6 +264,7 @@ class ExcelDiff:
         # 首行标题合并，按照表2的顺序
         title = []
         title_modify = []
+        
         for i in range(len(sh2.title)):
             title_idx2[sh2.title[i]] = i
             title.append(sh2.title[i])
@@ -263,7 +279,7 @@ class ExcelDiff:
                 title.append(sh1.title[i])
                 title_modify.append(MODIFY.DEL)
 
-        content.append(title)
+        content.append([t if '#' not in t else '' for t in title]) # fix bug: 写表的时候，恢复原来的内容
         modify.append(title_modify)
         ncols = len(title)
 
@@ -406,6 +422,7 @@ class ExcelDiff:
             if sh not in sheet_name_sorted:
                 sheet_name_sorted.append(sh)
 
+        # 遍历页签
         for sh in sheet_name_sorted:
             k = sh
             v = sheet_name_dict[k]
