@@ -105,7 +105,7 @@ class ExcelDiff:
         for idx_sheet in range(n):
             sh = xl.sheets()[idx_sheet]
             content = []
-            if sh.visibility == 1:
+            if sh.visibility == 1 or sh.nrows == 0:
                 continue
             for idx_row in range(sh.nrows):
                 row = []
