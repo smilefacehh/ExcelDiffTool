@@ -51,17 +51,24 @@ class Sheet:
                     title[idx] = '#'
                 else:
                     title[idx] = str(title[idx-1]) + '#' # fix bug: 可能存在表头内容空的情况，默认给它一个名字，用前面的名字加上'#'
-            self.title.append(str(title[idx]))
+            title[idx] = str(title[idx])
+            if title[idx] in self.title:
+                c = 0
+                new_title = title[idx] + '@'
+                # 可能有多个相同的表头，@往后加
+                for t in self.title:
+                    if title[idx] in t:
+                        if c < t.count('@'):
+                            c = t.count('@')
+                            new_title = t + '@'
+                self.title.append(new_title) # fix bug: 可能存在表头内容相同的情况，名字加@
+            else:
+                self.title.append(title[idx])
 
     def set_content(self, content):
         self.content = content
         for idx in range(len(self.content[0])):
-            self.content[0][idx] = str(self.content[0][idx])
-            if self.content[0][idx] == '':
-                if idx == 0:
-                    self.content[0][idx] = '#'
-                else:
-                    self.content[0][idx] = self.content[0][idx-1] + '#' # fix bug: 可能存在表头内容空的情况，默认给它一个名字，用前面的名字加上'#'
+            self.content[0][idx] = self.title[idx]
 
     def compare_title(self, other):
         """
@@ -90,7 +97,7 @@ class ExcelDiff:
         self.excel_path1 = excel1
         self.excel_path2 = excel2
         self.excel_path_diff = excel2.split('/')[-1].split('.')[0] + '_diff.xlsx' # 差异文件写回路径，当前目录
-        self.color_table = {MODIFY.UNCHANGED:'FFFFFF', MODIFY.MOD:'FFFF00', MODIFY.ADD:'6B84EF', MODIFY.DEL:'FF4F4F', MODIFY.CHANGE_ROW:'B0C4DE'} # 白色、黄色、蓝色、红色、粉色
+        self.color_table = {MODIFY.UNCHANGED:'FFFFFF', MODIFY.MOD:'FFFF00', MODIFY.ADD:'6B84EF', MODIFY.DEL:'FF4F4F', MODIFY.CHANGE_ROW:'90EE90'} # 白色、黄色、蓝色、红色、粉色
         self.log = {} # 输出日志，{sheetname: {titles: [], modify: [], add: [], del: [], changerow: []}}
         self.window = window # 用于打印日志
 
@@ -198,6 +205,7 @@ class ExcelDiff:
         sh_inter1 = copy.deepcopy(sh1.content)
         sh_inter2 = copy.deepcopy(sh2.content)
 
+        # 遍历公共列
         for k,v in title_union.items():
             if v == COMPARE.OTHER:
                 idx = -1
@@ -266,6 +274,7 @@ class ExcelDiff:
         title = []
         title_modify = []
         
+        # 遍历表2的表头
         for i in range(len(sh2.title)):
             title_idx2[sh2.title[i]] = i
             title.append(sh2.title[i])
@@ -280,7 +289,16 @@ class ExcelDiff:
                 title.append(sh1.title[i])
                 title_modify.append(MODIFY.DEL)
 
-        content.append([t if '#' not in str(t) else '' for t in title]) # fix bug: 写表的时候，恢复原来的内容
+        # 待写回的表头内容，恢复原来的内容
+        title_writeback = []
+        for t in title:
+            if '#' in t:
+                title_writeback.append('')
+            elif '@' in t:
+                title_writeback.append(t.replace('@', ''))
+            else:
+                title_writeback.append(t)
+        content.append(title_writeback)
         modify.append(title_modify)
         ncols = len(title)
 
