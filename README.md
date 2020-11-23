@@ -6,12 +6,12 @@ Excel表格对比工具，pyQT可视化界面，批量对比。
 - 安装依赖
 - 使用方法
 - 代码说明
-- 文件
+- 文件说明
 
 ### 1.安装依赖
 ```
-首先需要安装python3, pip3
-pip3 install pyqt5 xlrd xlsxwriter
+1) 安装 python3, pip3
+2) 安装依赖项 pip3 install pyqt5 xlrd xlsxwriter
 ```
 
 ### 2.使用方法
@@ -23,9 +23,9 @@ pip3 install pyqt5 xlrd xlsxwriter
 
 颜色说明：
 1. 黄色：修改
-2. 淡蓝色：新增
-3. 淡红色：删除
-4. 淡绿色：行位置有变化
+2. 蓝色：新增
+3. 红色：删除
+4. 绿色：行位置有变化
 
 ### 3.代码说明
 Excel表格对比结果的准确性，依赖于两个参数，可以调整这两个参数来尝试取得更好的对比结果
@@ -37,7 +37,7 @@ COMPARE_LINE_DIS = 100
 COMPARE_GAMMA = 0.8
 ```
 
-### 4.文件
+### 4.文件说明
 + MainWindow.ui 用Qt Designer设计并生成的图形界面文件
 + MainWindow.py 程序入口，使用`pyuic5 -o MainWindow.py MainWindow.ui`生成基本框架代码
 + excel_diff.py 表格对比逻辑
