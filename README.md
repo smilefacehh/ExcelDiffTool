@@ -3,12 +3,12 @@ Excel表格对比工具，pyQT可视化界面，批量对比。
 ![image](https://github.com/smilefacehh/ExcelDiffTool/blob/main/screen.png)
 
 ### 目录
-- 安装依赖
-- 使用方法
-- 代码说明
-- 文件说明
+- [安装依赖](#t1)
+- [使用方法](#t2)
+- [代码说明](#t3)
+- [文件说明](#t4)
 
-### 1.安装依赖
+### <span id="t1">1.安装依赖</span>
 ```
 1) 安装 python3, pip3
 2) 安装依赖项 pip3 install pyqt5 xlrd xlsxwriter
